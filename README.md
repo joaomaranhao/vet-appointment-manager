@@ -28,7 +28,7 @@ Sistema para gerenciar agendamento de consultas para uma clínica veterinária.
     
 - Cliente
     - ReactJS
-    - Bootstrap
+    - Tailwind
 
 - Banco de dados
     - PostgreSQL
