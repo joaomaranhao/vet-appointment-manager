@@ -13,7 +13,8 @@ export default function Clientes() {
         cpf: '',
         telefone: '',
         email: '',
-        endereco: ''
+        endereco: '',
+        pets: []
     });
 
     useEffect(() => {
@@ -54,7 +55,8 @@ export default function Clientes() {
                 cpf: '',
                 telefone: '',
                 email: '',
-                endereco: ''
+                endereco: '',
+                pets: []
             });
             setShowForm(false);
         } catch (err) {
@@ -81,7 +83,8 @@ export default function Clientes() {
             cpf: '',
             telefone: '',
             email: '',
-            endereco: ''
+            endereco: '',
+            pets: []
         });
     }
 
