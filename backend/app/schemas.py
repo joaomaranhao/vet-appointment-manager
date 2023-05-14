@@ -28,3 +28,30 @@ class Veterinarian(VeterinarianBase):
 
     class Config:
         orm_mode = True
+
+
+class ClientBase(BaseModel):
+    nome: str
+    cpf: str
+    telefone: str
+    email: str
+    endereco: str
+
+
+class ClientCreate(ClientBase):
+    pass
+
+
+class ClientUpdate(BaseModel):
+    nome: Optional[str]
+    cpf: Optional[str]
+    telefone: Optional[str]
+    email: Optional[str]
+    endereco: Optional[str]
+
+
+class Client(ClientBase):
+    id: int
+
+    class Config:
+        orm_mode = True
