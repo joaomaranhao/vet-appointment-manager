@@ -149,6 +149,54 @@ def delete_client(client_id: int, db: Session = Depends(get_db)):
     return crud.delete_client(db=db, client_id=client_id)
 
 
+@app.get("/pets/", response_model=list[schemas.Pet], tags=["pets"])
+def read_pets(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    pets = crud.get_pets(db, skip=skip, limit=limit)
+    return pets
+
+
+@app.get("/pets/{pet_id}", response_model=schemas.Pet, tags=["pets"])
+def read_pet(pet_id: int, db: Session = Depends(get_db)):
+    db_pet = crud.get_pet(db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pet not found",
+        )
+    return db_pet
+
+
+@app.post("/pets/", response_model=schemas.Pet, tags=["pets"])
+def create_pet(pet: schemas.PetCreate, db: Session = Depends(get_db)):
+    return crud.create_pet(db=db, pet=pet)
+
+
+@app.put("/pets/{pet_id}", response_model=schemas.Pet, tags=["pets"])
+def update_pet(
+    pet_id: int,
+    pet: schemas.PetUpdate,
+    db: Session = Depends(get_db),
+):
+    db_pet = crud.get_pet(db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pet not found",
+        )
+    return crud.update_pet(pet_id=pet_id, db=db, pet=pet)
+
+
+@app.delete("/pets/{pet_id}", response_model=schemas.Pet, tags=["pets"])
+def delete_pet(pet_id: int, db: Session = Depends(get_db)):
+    db_pet = crud.get_pet(db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pet not found",
+        )
+    return crud.delete_pet(db=db, pet_id=pet_id)
+
+
 @app.get("/", include_in_schema=False)
 def docs():
     return RedirectResponse(url="/docs")
