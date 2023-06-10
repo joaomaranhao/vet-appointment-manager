@@ -197,6 +197,72 @@ def delete_pet(pet_id: int, db: Session = Depends(get_db)):
     return crud.delete_pet(db=db, pet_id=pet_id)
 
 
+@app.get(
+    "/appointments/", response_model=list[schemas.Appointment], tags=["appointments"]
+)
+def read_appointments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    appointments = crud.get_appointments(db, skip=skip, limit=limit)
+    return appointments
+
+
+@app.get(
+    "/appointments/{appointment_id}",
+    response_model=schemas.Appointment,
+    tags=["appointments"],
+)
+def read_appointment(appointment_id: int, db: Session = Depends(get_db)):
+    db_appointment = crud.get_appointment(db, appointment_id=appointment_id)
+    if db_appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found",
+        )
+    return db_appointment
+
+
+@app.post("/appointments/", response_model=schemas.Appointment, tags=["appointments"])
+def create_appointment(
+    appointment: schemas.AppointmentCreate, db: Session = Depends(get_db)
+):
+    return crud.create_appointment(db=db, appointment=appointment)
+
+
+@app.put(
+    "/appointments/{appointment_id}",
+    response_model=schemas.Appointment,
+    tags=["appointments"],
+)
+def update_appointment(
+    appointment_id: int,
+    appointment: schemas.AppointmentUpdate,
+    db: Session = Depends(get_db),
+):
+    db_appointment = crud.get_appointment(db, appointment_id=appointment_id)
+    if db_appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found",
+        )
+    return crud.update_appointment(
+        appointment_id=appointment_id, db=db, appointment=appointment
+    )
+
+
+@app.delete(
+    "/appointments/{appointment_id}",
+    response_model=schemas.Appointment,
+    tags=["appointments"],
+)
+def delete_appointment(appointment_id: int, db: Session = Depends(get_db)):
+    db_appointment = crud.get_appointment(db, appointment_id=appointment_id)
+    if db_appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found",
+        )
+    return crud.delete_appointment(db=db, appointment_id=appointment_id)
+
+
 @app.get("/", include_in_schema=False)
 def docs():
     return RedirectResponse(url="/docs")
