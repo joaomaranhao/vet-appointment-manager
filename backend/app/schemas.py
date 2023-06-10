@@ -9,6 +9,7 @@ class VeterinarianBase(BaseModel):
     telefone: str
     email: str
     especialidade: str
+    appointments: list
 
 
 class VeterinarianCreate(VeterinarianBase):
@@ -21,6 +22,7 @@ class VeterinarianUpdate(BaseModel):
     telefone: Optional[str]
     email: Optional[str]
     especialidade: Optional[str]
+    appointments: Optional[list]
 
 
 class Veterinarian(VeterinarianBase):
@@ -37,6 +39,7 @@ class ClientBase(BaseModel):
     email: str
     endereco: str
     pets: list
+    appointments: list
 
 
 class ClientCreate(ClientBase):
@@ -50,6 +53,7 @@ class ClientUpdate(BaseModel):
     email: Optional[str]
     endereco: Optional[str]
     pets: Optional[list]
+    appointments: Optional[list]
 
 
 class Client(ClientBase):
@@ -65,6 +69,7 @@ class PetBase(BaseModel):
     raca: str
     idade: int
     owner_id: int
+    appointments: list
 
 
 class PetCreate(PetBase):
@@ -77,9 +82,37 @@ class PetUpdate(BaseModel):
     raca: Optional[str]
     idade: Optional[int]
     owner_id: Optional[int]
+    appointments: Optional[list]
 
 
 class Pet(PetBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class AppointmentBase(BaseModel):
+    data: str
+    hora: str
+    veterinarian_id: int
+    pet_id: int
+    owner_id: int
+
+
+class AppointmentCreate(AppointmentBase):
+    pass
+
+
+class AppointmentUpdate(BaseModel):
+    data: Optional[str]
+    hora: Optional[str]
+    veterinarian_id: Optional[int]
+    pet_id: Optional[int]
+    owner_id: Optional[int]
+
+
+class Appointment(AppointmentBase):
     id: int
 
     class Config:
